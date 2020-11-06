@@ -1,8 +1,18 @@
 package model;
 public class PrivatePlaylist extends Playlist{
-	public PrivatePlaylist (String name,User user){
-		super(name,genresIndicator,genres,playlistDuration);
-		users = new User[1];
-		users[0]=user;
-	}	
+	private User privateUser;
+	public PrivatePlaylist(String playlistName,User user){
+		super(playlistName);
+		privateUser = user;
+	}
+	
+	@Override
+	public String getPlaylistInfo(){
+		String info = "";
+		info += getBasicInformation();
+		info += "**  Playlist type: Private"+"\n";
+		info += "**  Owner of the playlist: "+privateUser.getUserName()+"\n";
+		info += "***********************************"+"\n";
+		return info;
+	}
 }

@@ -1,10 +1,13 @@
 package model;
 public class MusicCollectAndShare{
-	private User[] users = new User[10];
-	private Song[] poolSongs = new Song[30];
-	private Playlist[] playlistCollection = new Playlist[20];
+	private User[] users;
+	private Song[] poolSongs;
+	private Playlist[] playlistCollection;
 	
 	public MusicCollectAndShare(){
+		users = new User[10];
+		poolSongs = new Song[30];
+		playlistCollection = new Playlist[20];
 	}
 	public boolean createUser(String username,String password,int age){
 		for(int i=0;i<users.length;i++){
@@ -33,10 +36,37 @@ public class MusicCollectAndShare{
 		}
 		return info;
 	}
-	public boolean createPublicPlaylist(String playlistName,User playlistUser){
+	public String getAllInfoOfPlaylists(){
+		String info="";
+		for(int i=0;i<playlistCollection.length;i++){
+			if(playlistCollection[i]!=null){
+				info += playlistCollection[i].getPlaylistInfo();
+			}
+		}
+		return info;
+	}	
+	public boolean createPlaylist(String playlistName,User playlistUser){
 		for(int i=0;i<playlistCollection.length;i++){
 			if(playlistCollection[i]==null){
-				playlistCollection[i]=new PublicPlaylist(playlistName,playlistUser);
+				playlistCollection[i]=new PrivatePlaylist(playlistName,playlistUser);
+				return true;
+			}	
+		}
+		return false;
+	}
+	public boolean createPlaylist(User playlistUser,String playlistName){
+		for(int i=0;i<playlistCollection.length;i++){
+			if(playlistCollection[i]==null){
+				playlistCollection[i]=new RestrictedPlaylist(playlistUser,playlistName);
+				return true;
+			}	
+		}
+		return false;
+	}
+	public boolean createPlaylist(String playlistName,User playlistUser,int calification){
+		for(int i=0;i<playlistCollection.length;i++){
+			if(playlistCollection[i]==null){
+				playlistCollection[i]=new PublicPlaylist(playlistName,playlistUser,calification);
 				return true;
 			}	
 		}
@@ -62,6 +92,9 @@ public class MusicCollectAndShare{
 			}
 		}
 		return index;	
+	}
+	public User giveAUserWithIndex(int index){
+		return users[index];
 	}
 	public void newSongAddedTo(String name,String password){
 		users[findUser(name,password)].songsAdded++;

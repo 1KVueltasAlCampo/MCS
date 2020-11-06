@@ -38,6 +38,12 @@ public class Song{
 	public void setGenreIndicator(int genre){
 		this.genreIndicator=genreIndicator;
 	}
+	public int getMinuteDuration(){
+		return songDuration.getMinute();
+	}
+	public int getSecondDuration(){
+		return songDuration.getSecond();
+	}
 	public String getSongInformation(){
 		String info = "";
 		info += "**************  Song **************"+"\n";

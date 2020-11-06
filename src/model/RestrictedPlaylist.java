@@ -1,20 +1,31 @@
 package model;
-public class RestrictedPlaylist extends Playlist{
-	
-	public RestrictedPlaylist (String name,User user){
-		super(name,genresIndicator,genres,playlistDuration); 
-		user = new User[5];
-		users[0]=user;
+public class RestrictedPlaylist extends Playlist implements UserRelatedMethods{
+	private final static int playlistSize=5;
+	private User[] playlistUsers;
+	public RestrictedPlaylist (User user,String playlistName){
+		super(playlistName); 
+		playlistUsers = new User[playlistSize];
+		playlistUsers[0]=user;
 	}
-	public boolean addUser(String username,String password,int age,int ){
-		for(int i=0;i<pilots.length;i++){
-			if(pilots[i]==null){
-				pilots[i]=new Pilot(name,age,scuderia,scores);
-				return true;
-			}
+	public boolean addAUserToPlaylist(User appUser){
+		for(int i=0;i<playlistUsers.length;i++){
+			if(playlistUsers[i]==null){
+					playlistUsers[i]=appUser;
+					return true;
+				}
 		}
 		return false;
 	}
-		
-	
+	@Override
+	public String getPlaylistInfo(){
+		String info = "";
+		info += getBasicInformation();
+		info += "**  Playlist type: Restricted"+"\n";
+		info += "**  Users with access: ";
+		for(int i=0;i<playlistUsers.length;i++){
+			info+= playlistUsers[i].getUserName()+", ";
+		}
+		info += "\n"+"***********************************"+"\n";
+		return info;
+	}
 }

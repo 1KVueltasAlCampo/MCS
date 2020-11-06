@@ -138,6 +138,50 @@ public class Menu{
 		Duration songLength = new Duration(minute,second);
 		return songLength;
 	}
+	public void createAPlaylist(){
+		int index=-1;
+		boolean aux = false;
+		System.out.println("Enter the name of the playlist");
+		String playlistName = sc.nextLine();
+		System.out.println("Enter the name of the user that is going to create the playlist ");
+		String playlistUserName=sc.nextLine();
+		System.out.println("Enter password");
+		String password=sc.nextLine();
+		index = mcs.findUser(playlistUserName,password);
+		if(index != -1){
+			System.out.println("Indicate what type of playlist you are going to create. Enter 1 for a private playlist, 2 for a restricted one, and 3 for a public one:");
+			int choice=readOption();
+			aux=addAPlaylist(choice,playlistName,index);
+			System.out.println("The playlist ");
+			checkRegister(aux);
+		}
+		else{
+			System.out.println("The song could not be added, invalid user or password ");
+		}
+	
+	}
+	public boolean addAPlaylist(int choice,String playlistName,int index){
+		User appUser = mcs.giveAUserWithIndex(index);
+		boolean aux = false;
+		switch(choice){
+			case 1:
+				aux=mcs.createPlaylist(playlistName,appUser);
+				break;
+			case 2:
+				aux=mcs.createPlaylist(appUser,playlistName);
+				break;
+			case 3:
+				System.out.println("Enter what rating you give to the playlist");
+				int rating = sc.nextInt();
+				sc.nextLine();
+				aux=mcs.createPlaylist(playlistName,appUser,rating);
+				break;
+			default:
+				System.out.println("Please enter a valid option");
+				break;
+		}
+		return aux;
+	}
 	public void doOperation(int choice){
 		switch(choice){
 			case CREATE_A_USER:
@@ -153,7 +197,7 @@ public class Menu{
 				System.out.println(mcs.getAllInfoOfSongs());
 				break;
 			case CREATE_A_PLAYLIST:
-			
+				createAPlaylist();
 				break;
 			case ADD_A_USER_TO_A_PLAYLIST:
 
@@ -162,7 +206,7 @@ public class Menu{
 
 				break;
 			case SHOW_PLAYLISTS:
-
+				System.out.println(mcs.getAllInfoOfPlaylists());
 				break;
 			case EXIT:
 				break;

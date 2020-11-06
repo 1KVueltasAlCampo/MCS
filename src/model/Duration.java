@@ -1,17 +1,10 @@
 package model;
 public class Duration{
-	private int hour;
 	private int minute;
 	private int second;
 	public Duration(int minute,int second){
 		this.minute=minute;
 		this.second=second;
-	}
-	public int getHour(){
-		return hour;
-	}
-	public void setHour(int hour){
-		this.hour=hour;
 	}
 	public int getMinute(){
 		return minute;

@@ -1,29 +1,86 @@
 package model;
 public abstract class Playlist{ 
-	private String name;
+	private String playlistName;
 	private Duration playlistDuration;
-	private int genresIndicator;
-	private Genres[] playlistGenres;
-	private Song[] song;
-	private User[] users;	
+	private Genres playlistGenre;
+	private Song[] playlistSongs;
 	
-	public Playlist(String name){
-		this.name=name;
-		genresIndicator=1;
-		genres=Genres.values()[genresIndicator-1];
+	public Playlist(String playlistName){
+		this.playlistName=playlistName;
+		playlistSongs = new Song[30];
+		playlistGenre=Genres.values()[6];
 		playlistDuration=new Duration(0,0);
 	}
-	public String getName(){
-		return name;
+	public String getPlaylistName(){
+		return playlistName;
 	}
-	public void setName(String name){
-		this.name=name;
+	public void setPlaylistName(String playlistName){
+		this.playlistName=playlistName;
 	}
-	public int genresIndicator(){
+	/*
+	public int getGenresIndicator(){
 		return genresIndicator;
 	}
 	public void setGenresIndicator (int genresIndicator){
 		this.genresIndicator=genresIndicator;
+	}
+	*/
+	public boolean checkGenreExistence(int genreIndicator) {
+		for(int i=0;i<playlistSongs.length;i++){
+			if((playlistSongs[i]!= null)&&(genreIndicator==playlistSongs[i].getGenreIndicator())){
+				return true;
+			}
+		}
+		return false;
+	}
+	public String putGenres(){
+		String info = "";
+		for(int i=0;i<5;i++){
+			if(checkGenreExistence(i)){
+				info += Genres.values()[i]+", ";
+			}
+		}	
+		return info;
+	}
+	public void changeDuration(){
+		int seconds = 0;
+		int minutes = 0;
+		int aux=0;
+		for(int i=0;i<playlistSongs.length;i++){
+			if(playlistSongs[i]!=null){
+				seconds += playlistSongs[i].getSecondDuration();
+				minutes += playlistSongs[i].getMinuteDuration();
+			}	
+		}
+		aux = seconds%60;
+		minutes += seconds/60;
+		seconds = aux;
+		playlistDuration.setMinute(minutes);
+		playlistDuration.setSecond(seconds);
+	}
+	public String getBasicInformation(){
+		changeDuration();
+		String info="";
+		info += "**************  Playlist **************"+"\n";
+		info += "**  Title: "+getPlaylistName()+"\n";
+		info += "**  Duration: "+playlistDuration.getDurationInfo()+"\n";
+		info += "**  Genre: ";
+		if(playlistSongs[0]!=null){
+			info += putGenres()+"\n";	
+		}
+		else {
+			info += playlistGenre.toString()+"\n";
+		}
+		return info;
+	}
+	public boolean addASongToPlaylist(Song poolSong){
+			for(int i=0;i<playlistSongs.length;i++){
+				if(playlistSongs[i]==null){
+					playlistSongs[i]=poolSong;
+					return true;
+				}
+			}	
+		return false;
 	}
 	public abstract String getPlaylistInfo();
 }
