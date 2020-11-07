@@ -182,6 +182,31 @@ public class Menu{
 		}
 		return aux;
 	}
+	public void userIntoAPlaylist(){
+		int userIndex = -1;
+		boolean aux = false;
+		System.out.println("Enter the name of the user that you want to add: ");
+		String playlistUserName=sc.nextLine();
+		System.out.println("Enter the password");
+		String password=sc.nextLine();
+		userIndex = mcs.findUser(playlistUserName,password);
+		if(userIndex != -1){
+			System.out.println("Enter the name of the playlist in which the user will be added");
+			String playlistName = sc.nextLine();
+			int playlistIndex = mcs.findPlaylist(playlistName);
+			if(playlistIndex != -1 || mcs.playlistInstanceOf(playlistIndex)!=1){
+				aux = mcs.castAndAddAUserToPlaylist(playlistIndex,mcs.giveAUserWithIndex(userIndex));
+				System.out.println("The user ");
+				checkRegister(aux);
+			}
+			else {
+				System.out.println("The playlist entered does not exist or is private");
+			}
+		}
+		else{
+			System.out.println("The user could not be added, invalid user or password ");
+		}
+	}
 	public void doOperation(int choice){
 		switch(choice){
 			case CREATE_A_USER:
@@ -200,7 +225,7 @@ public class Menu{
 				createAPlaylist();
 				break;
 			case ADD_A_USER_TO_A_PLAYLIST:
-
+				userIntoAPlaylist();
 				break;
 			case ADD_A_SONG_TO_A_PLAYLIST:
 

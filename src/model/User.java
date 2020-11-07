@@ -3,7 +3,7 @@ public class User {
 	private String userName;
 	private String password;
 	private int age;
-	public int songsAdded;
+	private int songsAdded;
 	private int categoryIndicator;
 	private Category category;
 	
@@ -34,6 +34,9 @@ public class User {
 	}
 	public void setCategory(int categoryIndicator){
 		category=Category.values()[categoryIndicator-1];
+	}
+	public void songsAddedCounter(){
+		songsAdded++;
 	}
 	public void changeCategory(){
 		int levelCategory=0;

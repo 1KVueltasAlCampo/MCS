@@ -5,7 +5,6 @@ public class PrivatePlaylist extends Playlist{
 		super(playlistName);
 		privateUser = user;
 	}
-	
 	@Override
 	public String getPlaylistInfo(){
 		String info = "";

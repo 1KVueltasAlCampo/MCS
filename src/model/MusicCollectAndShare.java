@@ -76,7 +76,7 @@ public class MusicCollectAndShare{
 			for(int i=0;i<poolSongs.length;i++){
 				if(poolSongs[i]==null){
 					poolSongs[i]=new Song(title,authorName,releaseDate,genre,songDuration);
-					newSongAddedTo(name,password);
+					users[findUser(name,password)].songsAddedCounter();
 					return true;
 				}
 			}	
@@ -93,10 +93,52 @@ public class MusicCollectAndShare{
 		}
 		return index;	
 	}
+	public int findSong(String title){
+		int index=-1;
+		for(int i=0;i<poolSongs.length;i++){
+			if(poolSongs[i]!=null){
+				if((title.equalsIgnoreCase(poolSongs[i].getTitle()))){
+					index=i;
+				}
+			}
+		}
+		return index;	
+	}
+	public int findPlaylist(String playlistName){
+		int index=-1;
+		for(int i=0;i<playlistCollection.length;i++){
+			if(playlistCollection[i]!=null){
+				if((playlistName.equalsIgnoreCase(playlistCollection[i].getPlaylistName()))){
+					index=i;
+				}
+			}
+		}
+		return index;
+	}
+	public int playlistInstanceOf(int index){
+		if(playlistCollection[index] instanceof PrivatePlaylist){
+			return 1;
+		}
+		else if(playlistCollection[index] instanceof RestrictedPlaylist){
+			return 2;
+		}
+		return 3;
+	}
+	public boolean castAndAddAUserToPlaylist(int index,User appUser){
+		boolean aux=false;
+		if(playlistInstanceOf(index)==2){
+			RestrictedPlaylist rP = (RestrictedPlaylist) playlistCollection[index];
+			aux=rP.addAUserToPlaylist(appUser);
+			playlistCollection[index]= rP;
+		}
+		else if(playlistInstanceOf(index)==3){
+			PublicPlaylist pP = (PublicPlaylist) playlistCollection[index];
+			aux=pP.addAUserToPlaylist(appUser);
+			playlistCollection[index]=pP;
+		}
+		return aux;
+	}
 	public User giveAUserWithIndex(int index){
 		return users[index];
-	}
-	public void newSongAddedTo(String name,String password){
-		users[findUser(name,password)].songsAdded++;
 	}
 }

@@ -17,14 +17,6 @@ public abstract class Playlist{
 	public void setPlaylistName(String playlistName){
 		this.playlistName=playlistName;
 	}
-	/*
-	public int getGenresIndicator(){
-		return genresIndicator;
-	}
-	public void setGenresIndicator (int genresIndicator){
-		this.genresIndicator=genresIndicator;
-	}
-	*/
 	public boolean checkGenreExistence(int genreIndicator) {
 		for(int i=0;i<playlistSongs.length;i++){
 			if((playlistSongs[i]!= null)&&(genreIndicator==playlistSongs[i].getGenreIndicator())){
@@ -73,13 +65,25 @@ public abstract class Playlist{
 		}
 		return info;
 	}
+	public boolean songExists(Song poolSong){
+		for(int i=0;i<playlistSongs.length;i++){
+			if(playlistSongs[i]!=null){
+				if((poolSong.getTitle()).equalsIgnoreCase(playlistSongs[i].getTitle())){
+					return true;
+				}		
+			}			
+		}
+		return false;	
+	}
 	public boolean addASongToPlaylist(Song poolSong){
+		if(!(songExists(poolSong))){
 			for(int i=0;i<playlistSongs.length;i++){
 				if(playlistSongs[i]==null){
 					playlistSongs[i]=poolSong;
 					return true;
-				}
-			}	
+				}	
+			}
+		}	
 		return false;
 	}
 	public abstract String getPlaylistInfo();
