@@ -6,6 +6,13 @@ public class Song{
 	private int genreIndicator;
 	private Genres songGenre;
 	private Duration songDuration;
+	
+	/**
+	Constructor method of the class "Song" <br>
+	<b> pre: </b><br>
+	<b> post: </b> Create an object of type PublicPlaylist <br>
+	@param playlistName String that indicates the name of the playlist.
+	*/
 	public Song(String title,String authorName,String releaseDate,int genreIndicator,Duration songDuration){
 		this.title=title;
 		this.authorName=authorName;

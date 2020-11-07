@@ -7,6 +7,12 @@ public class User {
 	private int categoryIndicator;
 	private Category category;
 	
+	/**
+	Constructor method of the class "User" <br>
+	<b> pre: </b> <br>
+	<b> post: </b> Create an object of type RestrictedPlaylist <br>
+	@param userName String that indicates the name of the user. userName cannot contain spaces
+	*/
 	public User(String userName,String password,int age){
 		this.userName = userName;
 		this.password = password;
