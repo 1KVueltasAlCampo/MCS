@@ -9,8 +9,9 @@ public class Menu{
 	private final static int CREATE_A_PLAYLIST=5;
 	private final static int ADD_A_USER_TO_A_PLAYLIST=6;
 	private final static int ADD_A_SONG_TO_A_PLAYLIST=7;
-	private final static int SHOW_PLAYLISTS=8;
-	private final static int EXIT=9;
+	private final static int ADD_A_RATE_TO_A_PUBLIC_PLAYLIST = 8;
+	private final static int SHOW_PLAYLISTS=9;
+	private final static int EXIT=10;
 	private MusicCollectAndShare mcs;
 	private static Scanner sc = new Scanner(System.in);
 	
@@ -66,8 +67,9 @@ public class Menu{
 		System.out.println("Enter 5 to create a playlist");
 		System.out.println("Enter 6 to add a user to the playlist");
 		System.out.println("Enter 7 to add a song to the playlist");
-		System.out.println("Enter 8 to show the playlists");
-		System.out.println("Enter 9 to exit");
+		System.out.println("Enter 8 to rate a public playlist");
+		System.out.println("Enter 9 to show the playlists");
+		System.out.println("Enter 10 to exit");
 		System.out.println("______________________________________________________________");	
 	}
 	public void addAUser(){
@@ -171,10 +173,7 @@ public class Menu{
 				aux=mcs.createPlaylist(appUser,playlistName);
 				break;
 			case 3:
-				System.out.println("Enter what rating you give to the playlist");
-				int rating = sc.nextInt();
-				sc.nextLine();
-				aux=mcs.createPlaylist(playlistName,appUser,rating);
+				aux=mcs.createPlaylist(playlistName);
 				break;
 			default:
 				System.out.println("Please enter a valid option");
@@ -194,9 +193,34 @@ public class Menu{
 			System.out.println("Enter the name of the playlist in which the user will be added");
 			String playlistName = sc.nextLine();
 			int playlistIndex = mcs.findPlaylist(playlistName);
-			if(playlistIndex != -1 || mcs.playlistInstanceOf(playlistIndex)!=1){
-				aux = mcs.castAndAddAUserToPlaylist(playlistIndex,mcs.giveAUserWithIndex(userIndex));
-				System.out.println("The user ");
+			if(playlistIndex != -1){
+				if(mcs.playlistInstanceOf(playlistIndex)==2){
+					aux = mcs.castAndAddAUserToPlaylist(playlistIndex,mcs.giveAUserWithIndex(userIndex));
+					System.out.println("The user ");
+					checkRegister(aux);
+				}	
+			}
+			else {
+				System.out.println("The playlist entered does not exist, is private or public");
+			}
+		}
+		else{
+			System.out.println("The user could not be added, invalid user or password ");
+		}
+	}
+	public void songIntoAPlaylist(){
+		int songIndex = -1;
+		boolean aux = false;
+		System.out.println("Enter the name of the song that you want to add: ");
+		String songName = sc.nextLine();
+		songIndex = mcs.findSong(songName);
+		if(songIndex != -1){
+			System.out.println("Enter the name of the playlist in which the song will be added");
+			String playlistName = sc.nextLine();
+			int playlistIndex = mcs.findPlaylist(playlistName);
+			if(playlistIndex != -1){
+				aux = mcs.giveASongToAPlaylist(playlistIndex,mcs.giveASongWithIndex(songIndex));
+				System.out.println("The song ");
 				checkRegister(aux);
 			}
 			else {
@@ -204,7 +228,20 @@ public class Menu{
 			}
 		}
 		else{
-			System.out.println("The user could not be added, invalid user or password ");
+			System.out.println("The song could not be added, does not exist or the name is incorrect ");
+		}
+	}
+	public void addARateToAPublicPlaylist(){
+		System.out.println("Enter the name of the playlist you want to rate. Remember that it must be a Public Playlist");
+		String playlistName = sc.nextLine();
+		int playlistIndex = mcs.findPlaylist(playlistName);
+		if(playlistIndex != -1 && mcs.playlistInstanceOf(playlistIndex) == 3){
+			System.out.println("Enter what rating do you give to the playlist");
+			double rating = sc.nextDouble();
+			mcs.giveARateToAPublicPlaylist(playlistIndex,rating);
+		}
+		else{
+			System.out.println("The playlist does not exist or is not public");
 		}
 	}
 	public void doOperation(int choice){
@@ -228,7 +265,10 @@ public class Menu{
 				userIntoAPlaylist();
 				break;
 			case ADD_A_SONG_TO_A_PLAYLIST:
-
+				songIntoAPlaylist();
+				break;
+			case ADD_A_RATE_TO_A_PUBLIC_PLAYLIST:
+				addARateToAPublicPlaylist();
 				break;
 			case SHOW_PLAYLISTS:
 				System.out.println(mcs.getAllInfoOfPlaylists());
@@ -251,6 +291,6 @@ public class Menu{
 			showMenu();
 			option=readOption();
 			doOperation(option);
-		}while(option!=9);
+		}while(option!=EXIT);
 	}
 }

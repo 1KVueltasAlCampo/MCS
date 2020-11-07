@@ -63,10 +63,10 @@ public class MusicCollectAndShare{
 		}
 		return false;
 	}
-	public boolean createPlaylist(String playlistName,User playlistUser,int calification){
+	public boolean createPlaylist(String playlistName){
 		for(int i=0;i<playlistCollection.length;i++){
 			if(playlistCollection[i]==null){
-				playlistCollection[i]=new PublicPlaylist(playlistName,playlistUser,calification);
+				playlistCollection[i]=new PublicPlaylist(playlistName);
 				return true;
 			}	
 		}
@@ -131,14 +131,24 @@ public class MusicCollectAndShare{
 			aux=rP.addAUserToPlaylist(appUser);
 			playlistCollection[index]= rP;
 		}
-		else if(playlistInstanceOf(index)==3){
-			PublicPlaylist pP = (PublicPlaylist) playlistCollection[index];
-			aux=pP.addAUserToPlaylist(appUser);
+		return aux;
+	}
+	public boolean giveASongToAPlaylist(int index,Song appSong){
+		boolean aux=false;
+		aux=playlistCollection[index].addASongToPlaylist(appSong);
+		return aux;
+	}
+	public void giveARateToAPublicPlaylist(int index,double userRating){
+		if(playlistInstanceOf(index)==3){
+			PublicPlaylist pP= (PublicPlaylist) playlistCollection[index];
+			pP.changeRating(userRating);
 			playlistCollection[index]=pP;
 		}
-		return aux;
 	}
 	public User giveAUserWithIndex(int index){
 		return users[index];
+	}
+	public Song giveASongWithIndex(int index){
+		return poolSongs[index];
 	}
 }
