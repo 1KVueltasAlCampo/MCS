@@ -179,6 +179,7 @@ public class Menu{
 	Ask the user for the duration of the song <br>
 	<b> pre: </b><br>
 	<b> post: </b> Given the data, returns a Duration object <br>
+	@return songLength
 	*/
 	public Duration readTheDuration(){
 		System.out.println("Enter the duration of the song in a MM:SS format: ");
